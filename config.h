@@ -64,7 +64,7 @@ static const int natural_scrolling = 0;
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
-static const char *termcmd[] = { "foot", NULL };
+static const char *termcmd[] = { "foot", "-t", "xterm", "-f", "JetBrainsMono:16", NULL };
 static const char *menucmd[] = { "bemenu-run", "--hf", "#EBCB8B", "--hb", "#3B4252", "--nb", "#2E3440", "--nf", "#ECEFF4", "--tb", "#2E3440", "--tf", "#ECEFF4", "-H", "16", "--fn", "JetBrainsMono", NULL};
 static const char *mute[] = {"amixer", "set", "Master", "toggle", NULL};
 static const char *louder[] = {"amixer", "set", "Master", "5%+", NULL};
