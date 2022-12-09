@@ -8,10 +8,13 @@ static const float focuscolor[]     = {0.7490196078431373, 0.3803921568627451, 0
 /* tagging */
 static const char *tags[] = { "", "", "", "", "", "", "", "", "" };
 
-
 static const Rule rules[] = {
 	/* app_id     title       tags mask     isfloating   monitor */
-	{ "mpv",     NULL,       1 << 8,            0,           -1 },
+	{ "mpv",     NULL,       1 << 8,            0,       -1 },
+	/* examples:
+	{ "Gimp",     NULL,       0,            1,           -1 },
+	{ "firefox",  NULL,       1 << 8,       0,           -1 },
+	*/
 };
 
 /* layout(s) */
@@ -40,7 +43,7 @@ static const struct xkb_rule_names xkb_rules = {
 	/* example:
 	.options = "ctrl:nocaps",
 	*/
-	.options = "ctrl:swapcaps",
+//	.options = "ctrl:swapcaps",
 };
 
 static const int repeat_rate = 25;
@@ -48,12 +51,7 @@ static const int repeat_delay = 600;
 
 /* Trackpad */
 static const int tap_to_click = 1;
-static const int tap_and_drag = 1;
-static const int drag_lock = 1;
 static const int natural_scrolling = 0;
-static const int disable_while_typing = 1;
-static const int left_handed = 0;
-static const int middle_button_emulation = 0;
 
 #define MODKEY WLR_MODIFIER_ALT
 #define TAGKEYS(KEY,SKEY,TAG) \
@@ -73,17 +71,24 @@ static const char *louder[] = {"amixer", "set", "Master", "5%+", NULL};
 static const char *quieter[] = {"amixer", "set", "Master", "5%-", NULL};
 static const char *brighter[] = {"brightnessctl", "set", "5%+", NULL};
 static const char *darker[] = {"brightnessctl", "set", "5%-", NULL};
-static const char *lock[] = {"swaylock", NULL};
+static const char *lock[] = {"swaylock", "-c", "000000", NULL};
 static const char *ppm[] = {"ppmclient_bemenu", NULL};
+
+/* Key definitions */
+#define XF86MonBrightnessDown 0x1008ff03
+#define XF86MonBrightnessUp 0x1008ff02
+#define XF86AudioMute 0x1008ff12
+#define XF86AudioLowerVolume 0x1008ff11
+#define XF86AudioRaiseVolume 0x1008ff13
 
 static const Key keys[] = {
 	/* Note that Shift changes certain key codes: c -> C, 2 -> at, etc. */
 	/* modifier                  key                 function        argument */
-	{0,                          XF86MonBrightnessUp,       spawn,      {.v = brighter} },
-	{0,                          XF86MonBrightnessDown,     spawn,       {.v = darker} },
-	{0,                          XF86AudioMute,          spawn,  {.v = mute} },
-	{0,                          XF86AudioRaiseVolume,spawn,     {.v = louder} },
-	{0,                          XF86AudioLowerVolume,spawn,     {.v = quieter} },
+	{0,                     XF86MonBrightnessUp,  spawn,      {.v = brighter} },
+	{0,                     XF86MonBrightnessDown,spawn,       {.v = darker} },
+	{0,                     XF86AudioMute,       spawn,  {.v = mute} },
+	{0,                     XF86AudioRaiseVolume,spawn,     {.v = louder} },
+	{0,                     XF86AudioLowerVolume,spawn,     {.v = quieter} },
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_X,          spawn,          {.v = lock} },
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_P,          spawn,          {.v = ppm} },
 	{ MODKEY,                    XKB_KEY_p,          spawn,          {.v = menucmd} },
