@@ -10,7 +10,7 @@ static const char *tags[] = { "", "", "", "", "", "", "", "
 
 static const Rule rules[] = {
 	/* app_id     title       tags mask     isfloating   monitor */
-	{ "mpv",     NULL,       1 << 8,            0,       -1 },
+	{ "mpv",     NULL,       1 << 7,            0,       -1 },
 	/* examples:
 	{ "Gimp",     NULL,       0,            1,           -1 },
 	{ "firefox",  NULL,       1 << 8,       0,           -1 },
