@@ -1,6 +1,6 @@
 include config.mk
 
-CFLAGS += -I. -DWLR_USE_UNSTABLE -std=c99
+CFLAGS += -I. -DWLR_USE_UNSTABLE -std=c99 -pedantic
 
 WAYLAND_PROTOCOLS=$(shell pkg-config --variable=pkgdatadir wayland-protocols)
 WAYLAND_SCANNER=$(shell pkg-config --variable=wayland_scanner wayland-scanner)
@@ -10,6 +10,18 @@ CFLAGS += $(foreach p,$(PKGS),$(shell pkg-config --cflags $(p)))
 LDLIBS += $(foreach p,$(PKGS),$(shell pkg-config --libs $(p)))
 
 all: dwl
+
+clean:
+	rm -f dwl *.o *-protocol.h *-protocol.c
+
+install: dwl
+	install -Dm755 dwl $(DESTDIR)$(PREFIX)/bin/dwl
+	install -Dm644 dwl.1 $(DESTDIR)$(MANDIR)/man1/dwl.1
+
+uninstall:
+	rm -f $(DESTDIR)$(PREFIX)/bin/dwl $(DESTDIR)$(MANDIR)/man1/dwl.1
+
+.PHONY: all clean install uninstall
 
 # wayland-scanner is a tool which generates C headers and rigging for Wayland
 # protocols, which are specified in XML. wlroots requires you to rig these up
@@ -47,15 +59,6 @@ idle-protocol.o: idle-protocol.h
 config.h: | config.def.h
 	cp config.def.h $@
 
-dwl.o: config.h client.h xdg-shell-protocol.h wlr-layer-shell-unstable-v1-protocol.h idle-protocol.h
+dwl.o: config.mk config.h client.h xdg-shell-protocol.h wlr-layer-shell-unstable-v1-protocol.h idle-protocol.h util.h
 
-dwl: xdg-shell-protocol.o wlr-layer-shell-unstable-v1-protocol.o idle-protocol.o
-
-clean:
-	rm -f dwl *.o *-protocol.h *-protocol.c
-
-install: dwl
-	install -D dwl $(PREFIX)/bin/dwl
-
-.DEFAULT_GOAL=dwl
-.PHONY: clean
+dwl: xdg-shell-protocol.o wlr-layer-shell-unstable-v1-protocol.o idle-protocol.o util.o
